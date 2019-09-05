@@ -1,0 +1,26 @@
+ALTER SESSION SET CURRENT_SCHEMA = APEX_050100;
+
+COLUMN user_id Format 99999999999999999
+COLUMN first_name FORMAT A20
+COLUMN last_name FORMAT A20
+COLUMN default_schema FORMAT A30
+
+SELECT user_id,
+       first_name,
+       last_name,
+       default_schema
+FROM   wwv_flow_fnd_user
+WHERE  user_name = 'ADMIN'
+ORDER BY last_update_date DESC;
+
+UPDATE wwv_flow_fnd_user
+SET    web_password = 'secret'
+WHERE  user_name = 'ADMIN'
+AND    user_id = 35631273421214;
+
+BEGIN
+  WWV_FLOW_SECURITY.g_security_group_id := 10;
+  WWV_FLOW_FND_USER_API.unlock_account('ADMIN');
+  COMMIT;
+END;
+/
